@@ -23,6 +23,7 @@
  * Client to connect on WURFL Cloud Service.
  */
 
+const fs = require('fs')
 var http = require('http');
 var wurfl_cloud_client = require("./NodeWurflCloudClient/WurflCloudClient");
 var config = require("./NodeWurflCloudClient/Config");
@@ -62,7 +63,6 @@ function favicon(response) {
 }
 
 function example(response, request) {
-
     var brand, is_mobile, form_factor;
     var result_capabilities = {};
     //Please be sure to  substitute the following api_key with your own.
@@ -74,26 +74,40 @@ function example(response, request) {
     response.setHeader("Content-Type", "text/html");
     WurflCloudClientObject.detectDevice(request, null, function(err, result_capabilities){
         console.log("All capabilities available:" + JSON.stringify(result_capabilities));
+        writeTSV(result_capabilities)
         WurflCloudClientObject.getDeviceCapability('complete_device_name', function(error, brand){
             if(error!=null){
                 response.write("<br>Error: " + error + " <br/>");
                 response.end();
             }else{
                 WurflCloudClientObject.getDeviceCapability('is_mobile', function(error, is_mobile){
-                if(error!=null){
-                    response.write("<br>Error: " + error + " <br/>");
-                }else{
-                    WurflCloudClientObject.getDeviceCapability('form_factor', function(error, form_factor){
-                      response.write("<br>"+ 'Is Wireless Device: ' + is_mobile + " <br/>");
-                      response.write("<br>"+ 'Brand Name: ' + brand + " <br/>");
-                      response.write("<br>" + 'Form Factor: ' + form_factor + "</br>");
-                    })
-                }
+                    if(error!=null){
+                        response.write("<br>Error: " + error + " <br/>");
+                    }else{
+                        WurflCloudClientObject.getDeviceCapability('form_factor', function(error, form_factor){
+                            if(error!=null){
+                              response.write("<br>Error: " + error + " <br/>");
+                            }else{
+                              response.write("<br>"+ 'Is Wireless Device: ' + is_mobile + " <br/>");
+                              response.write("<br>"+ 'Brand Name: ' + brand + " <br/>");
+                              response.write("<br>" + 'Form Factor: ' + form_factor + "</br>");
+                            }
+                        })
+                    }
                 response.end();
-            });
+               });
             }
         });
     });
+}
+
+function writeTSV(args) {
+  let stream = fs.createWriteStream('./output.tsv')
+  stream.open()
+  let fields = Object.keys(args)
+  fields.forEach(field => {
+    stream.write(`${field}: ${args[field]}` + '   ')
+  })
 }
 
 function example2(response, request) {
