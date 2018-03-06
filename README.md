@@ -1,81 +1,14 @@
-# ScientiaMobile WURFL Cloud Client for Node.js
-
-The WURFL Cloud Service by ScientiaMobile, Inc., is a cloud-based
-mobile device detection service that can quickly and accurately
-detect over 500 capabilities of visiting devices.  It can differentiate
-between portable mobile devices, desktop devices, SmartTVs and any 
-other types of devices that have a web browser.
-
-This is the Node.js Client for accessing the WURFL Cloud Service, and
-it requires a free or paid WURFL Cloud account from ScientiaMobile:
-http://www.scientiamobile.com/cloud 
-
-## Installation
---------------
-### Requirements
-- Node.JS version 0.8.2
-
-### Sign up for WURFL Cloud
-First, you must go to http://www.scientiamobile.com/cloud and signup
-for a free or paid WURFL Cloud account (see above).  When you've finished
-creating your account, and have selected the WURFL Capabilities that you
-would like to use, you must copy your API Key, as it will be needed in
-the Client.
-
-### Installation
-
-**Via npm:**
-
-    $ npm install wurflcloud
-
-**Via Source:**
-
-[Download the source code](https://github.com/WURFL/wurfl-cloud-client-nodejs/zipball/master) and
-include the following lines in your code:
-
-   	var wurfl_cloud_client = require("./NodeWurflCloudClient/WurflCloudClient");
-	var config = require("./NodeWurflCloudClient/Config");
-
-### Configuration
-Set your API Key:
-
-   	var api_key = "XXXXXX:YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY";
-	var configuration = new config.WurflCloudConfig(api_key);
-
-### Example
-After you have installed and configured the WURFL Client, create example.js:
-
-	var brand;
-	var result_capabilities = {};
-	var WURFLCloudClientObject = new wurfl_cloud_client.WurflCloudClient(configuration, HttpRequest, HttpResponse);
-	WURFLCloudClientObject.detectDevice(HttpRequest, null, function(err, result_capabilities){
-		WURFLCloudClientObject.getDeviceCapability('brand_name', function(error, brand){
-			if(error!=null){
-				console.log('Error' + error);
-			}else{
-				console.log('Brand name: ' + brand);
-			}
-		});
-	});				
-
-You should see the brand name of your device in the console provided
-that you have already obtained a WURFL Cloud API key and that you have
-selected `brand_name` in your capabilities section.
-
-
 ### Example application
-After you have registered in WURFL Cloud Service [here](http://www.scientiamobile.com/cloud),
-to run the example application on you browser do the following:
 
-* Download and extract all the files in a folder.
-* Inside the `exampleApp.js` enter your own WURFL Cloud api key.
-* Select `brand_name` and `is_wireless_device` as your capabilities in ScientiaMobile WURFL Cloud website.
-* Run the `server/example` application inside a console with `node index.js`.
-* Go to a Web Browser in `http://localhost:8888`
-* Either chose `example` or `example2`.
+This is a sample application to show just some of the features of the wurlf software. When clicking on the `example without caching` button, the user will be able to see Three properties about their device.
+* Is it a wireless device?
+* What is the brand of the software?
+* What is the form the device is taking (desktop, tablet, phone? etc)
 
-You will see the brand name of your device and whether it is wireless or not.
+The `example memcache` button is yet to come.  
 
+#### Realworld Example
+* This technology can be used in real life situations in order to optimize user experience as well as processing speed. Depending on the device or the software the user is currently on, you can implement certain features and not others, or limit or enhance certain parts of your application.  This allows a great amount of flexibility and control flow from the developer's standpoint. 
 
 **2015 ScientiaMobile Incorporated**
 
